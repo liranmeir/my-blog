@@ -13,7 +13,7 @@ const config = {
 
   /* Profile
   ========================================= */
-  author: `Author Name`,                             // Name shows on profile
+  author: `Liran Meir`,                             // Name shows on profile
   profileDescription: "{Edit me in customize.js}",   // Shows under author name
   profileImageName: `profile.jpeg`,                  // Place profile.jpg/.jpeg/.png in _assets folder
   location: "",                                      // Location under profileDescription. "" --> disabled
