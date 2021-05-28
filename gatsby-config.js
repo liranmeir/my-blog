@@ -2,6 +2,7 @@ const config = require("./customize")
 const rss = require("./gatsby-rss")
 
 module.exports = {
+  pathPrefix: "/my-blog",
   siteMetadata: config,
   plugins: [
     `gatsby-plugin-react-helmet`,

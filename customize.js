@@ -24,7 +24,7 @@ const config = {
       showHeaderIcon: shows social media icon in header. When true, must have account name set
   ========================================= */
   socialMediaLinks: {
-    email:     { emailAddress: "", showHeaderIcon: true },
+    email:     { emailAddress: "liranmeir@gmail.com", showHeaderIcon: true },
     github:    { accountName: "", showHeaderIcon: true },
     facebook:  { accountName: "", showHeaderIcon: true },
     instagram: { accountName: "", showHeaderIcon: true },
