@@ -1,0 +1,103 @@
+---
+title: Creating an Angular app CI/CD pipeline with Github Actions & Firebase — less then 5 min
+date: 2021-05-13
+tags: [Angular, GithubActions, ci/cd, firebase]
+excerpt: Markdown Example
+---
+
+1. create angular app using the angular-cli
+   `ng new play-with-github-actions`
+2. add `firebaserc & firebase.json` files to the root of the project
+3. add to root folder `github/workflows/`<b>main.yml</b>
+
+```json 
+// .firebaserc
+{
+  "projects": {
+    "default": "liranmeir-actions"
+  }
+}
+```
+
+```json
+// firebase.json
+{
+  "hosting": {
+    "public": "dist/play-with-github-actions",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
+```
+
+```yml
+# ---main.yml---
+
+name: CI-CD
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: install dependencies
+        run: npm install
+      - name: build
+        run: npm run build
+      - name: test
+        run: npm run test-headless
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: dist
+          path: dist/play-with-github-actions
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: dist
+          path: dist/play-with-github-actions
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+```
+
+4. in the terminal hit `firebase login:ci `
+5. then copy the `FIREBASE_TOKEN` and store it in your GitHub repo’s `settings>Secrets` section
+6. Trigger a push/pull request and witness the pipeline being automated … Boom!!!
+
+![](https://cdn-images-1.medium.com/max/2400/1*ZtsUu3jwwW_IvWQhvXSGmA.png)<!-- .element height="25%" width="25%" -->
