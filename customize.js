@@ -15,7 +15,7 @@ const config = {
   ========================================= */
   author: `Liran Meir`, // Name shows on profile
   profileDescription: "life & Tech blog", // Shows under author name
-  profileImageName: `profile.jpeg`, // Place profile.jpg/.jpeg/.png in _assets folder
+  profileImageName: `profile.jpg`, // Place profile.jpg/.jpeg/.png in _assets folder
   location: "", // Location under profileDescription. "" --> disabled
   footerLink: "", // Link to page when you click footer name
 
