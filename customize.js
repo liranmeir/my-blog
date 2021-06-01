@@ -14,7 +14,7 @@ const config = {
   /* Profile
   ========================================= */
   author: `Liran Meir`, // Name shows on profile
-  profileDescription: "{Edit me in customize.js}", // Shows under author name
+  profileDescription: "life & Tech blog", // Shows under author name
   profileImageName: `profile.jpeg`, // Place profile.jpg/.jpeg/.png in _assets folder
   location: "", // Location under profileDescription. "" --> disabled
   footerLink: "", // Link to page when you click footer name
@@ -25,12 +25,21 @@ const config = {
   ========================================= */
   socialMediaLinks: {
     email: { emailAddress: "liranmeir@gmail.com", showHeaderIcon: true },
-    github: { accountName: "", showHeaderIcon: true },
+    github: {
+      accountName: "https://liranmeir.github.io",
+      showHeaderIcon: true,
+    },
     facebook: { accountName: "", showHeaderIcon: true },
     instagram: { accountName: "", showHeaderIcon: true },
     twitter: { accountName: "", showHeaderIcon: true },
-    linkedIn: { accountName: "", showHeaderIcon: true }, // Use URL after "linkedin.com/"
-    medium: { accountName: "", showHeaderIcon: true }, // Use URL after "medium.com/@"
+    linkedIn: {
+      accountName: "https://www.linkedin.com/in/liran-meir-96852114/",
+      showHeaderIcon: true,
+    }, // Use URL after "linkedin.com/"
+    medium: {
+      accountName: "https://liranmeir.medium.com/",
+      showHeaderIcon: true,
+    }, // Use URL after "medium.com/@"
   },
 
   /* Social Media Share Buttons--available below every post
