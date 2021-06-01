@@ -10,7 +10,7 @@ excerpt: Markdown Example
 2. add `firebaserc & firebase.json` files to the root of the project
 3. add to root folder `github/workflows/`<b>main.yml</b>
 
-```json 
+```json
 // .firebaserc
 {
   "projects": {
@@ -35,8 +35,8 @@ excerpt: Markdown Example
 }
 ```
 
-```yml
-# ---main.yml---
+```yaml
+#  main.yml
 
 name: CI-CD
 
@@ -93,10 +93,9 @@ jobs:
           args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
 ```
 
-4. in the terminal hit `firebase login:ci `
+4. in the terminal hit `firebase login:ci`
 5. then copy the `FIREBASE_TOKEN` and store it in your GitHub repo’s `settings>Secrets` section
 6. Trigger a push/pull request and witness the pipeline being automated … Boom!!!
 
