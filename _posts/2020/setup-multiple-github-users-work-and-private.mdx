@@ -1,0 +1,65 @@
+---
+title: Setup multiple Github users work & private
+date: 2020-06-20
+tags: [Github, git]
+excerpt: work with github personal and work accounts
+---
+
+
+![](../images/github-branches.jpeg) <!-- .element height="25%" width="25%" -->
+
+<Primary>
+  Follow below instructions to setup both work and personal git acconts
+</Primary>
+
+### 1. First thing will be to Create ssh key for both accounts
+
+> ssh-keygen -t rsa -C "liran.m@lawgeex.com" -f “github-lawgeex"
+> ssh-keygen -t rsa -C "liran.meir@gmail.com" -f “github-liranmeir"
+
+### 2. create ~/ssh/config and paste the following
+```~/ssh/config
+#Host *
+#  AddKeysToAgent yes
+#  UseKeychain yes
+#  IdentityFile ~/.ssh/id_rsa
+
+#lirameir account
+Host github.com
+HostName github.com
+User git
+IdentityFile ~/.ssh/github-liranmeir
+
+#lawgeex account
+Host github.com-liranmeirlawgeex
+HostName github.com
+User git
+IdentityFile ~/.ssh/github-lawgeex
+```
+
+
+### 3. add these to the agent via terminal:
+```
+ssh-add -K ~/.ssh/github-liranmeir
+ssh-add -K ~/.ssh/github-lawgeex
+```
+
+### 3.1 login to github.com first with personal user and then work user
+and copy secretes to both github accounts :
+```
+>pbcopy < ~/.ssh/github-liranmeir.pub
+>pbcopy < ~/.ssh/github-lawgeex.pub
+```
+
+
+### 4. set default git user name
+```
+git config — global user.name "liranmeir"
+git config — global user.email "liranmeirgmail.com"
+```
+
+<Info>
+inside of every new repo you’ll need to set the default user (work/personal) by using this command:
+
+git config user.email "liranmeir@lawgeex.com"
+</Info>
