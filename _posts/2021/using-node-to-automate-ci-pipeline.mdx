@@ -1,0 +1,126 @@
+---
+title: Using NodeJS to automate a ci cd pipeline
+date: 2020-06-19
+tags: [CI CD, NodeJS, Jenkins]
+---
+
+<Info>
+
+  This is how i used [NodeJS](https://nodejs.org) to simulate 
+  [github actions](https://docs.github.com/en/actions) ci cd pipeline stpes.
+</Info>
+
+<!-- Underline -->
+
+Main flow notice the use of <U>console.time('label')</U>
+
+```js
+;(async () => {
+  console.log("Starting deployment...")
+  console.time("Total deployment time")
+
+  // clearWorkspaceDirectory()
+
+  const report = await buildAndDeploy()
+
+  // printReport(report)
+
+  console.log("Deployment done.")
+  console.timeEnd("Total deployment time")
+})()
+```
+
+Here im iterating services
+and running my pipeline commands using Javascript
+this way makes it easy to run & debug the code strait from VSCode
+
+```js
+//buildAndDeploy implementation
+
+for (var service of services) {
+  try {
+    await runStep(
+      service,
+      "clone",
+      getCloneAndCheckoutScript(
+        WORKSPACE_DIRECTORY,
+        service,
+        "simple-build" // TODO:!!! change to master when finish developing1!!
+      )
+    )
+
+    await runStep(
+      service,
+      "tag",
+      getTagScript(WORKSPACE_DIRECTORY, service, LGX_GIT_TAG)
+    )
+
+    //TODO: as an improvment this could be replaced with running inside docker container
+    const serviceDirectory = `${WORKSPACE_DIRECTORY}/${service}`
+    await runStep(
+      service,
+      "build",
+      `cd ${serviceDirectory} && ./simple-build/build.sh`
+    )
+
+    await runStep(
+      service,
+      "storeArtifact",
+      `WORKSPACE_DIRECTORY=${WORKSPACE_DIRECTORY} LAWGEEX_SERVICE_NAME=${service} LGX_GIT_TAG=${LGX_GIT_TAG} ./frontends-build-and-deploy/push-artifact.sh`
+    )
+
+    await runStep(
+      service,
+      "deploy and invalidate cache",
+      `cd ${serviceDirectory} && LGX_ENV=${LGX_ENV} node ./simple-build/deploy.js`
+    )
+
+    report[service] = { status: "success" }
+  } catch (err) {
+    report[service] = { status: "fail", msg: err.msg }
+  }
+}
+return report
+```
+
+Example usage of <U>Spawn</U> to create a new child process
+
+```js
+const runStep = async (service, step, pipelineCommands) => {
+  console.log(`\n---- STEP : ${step} ----\n`)
+  console.time(`step - ${step}`)
+  return new Promise((resolve, reject) => {
+    const proc = spawn(pipelineCommands, [], { shell: true })
+
+    logProgress(proc, service)
+    proc.on("close", code => {
+      if (code === 0) {
+        console.timeEnd(`step - ${step}`)
+        resolve()
+      }
+      if (code !== 0) {
+        console.error(
+          `${service} build encountered an error, child process exited with code ${code}`
+        )
+        reject({ service, status: "fail", msg: "failed to " + step })
+      }
+    })
+  })
+}
+
+
+const logProgress = (proc, service) => {
+    // console output will output here
+    proc.stdout.on('data', (data) => {
+        console.log(`${service}: ${data}`)
+    })
+
+    proc.stderr.on('data', (data) => {
+        console.log(`${service}: ${data}`)
+    })
+
+    proc.on('error', (error) => {
+        console.error(`${service} error: ${error.message}`)
+    })
+}
+```
