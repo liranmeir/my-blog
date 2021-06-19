@@ -3,5 +3,6 @@
 <url> <loc>https://liranmeir.com/my-blog/about/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://liranmeir.com/my-blog/2020/creating-angular-ci-cd-pipeline-with-github-actions-and-firebase/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://liranmeir.com/my-blog/2020/setup-multiple-github-users-work-and-private/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://liranmeir.com/my-blog/2021/using-node-to-automate-ci-pipeline/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://liranmeir.com/my-blog/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 </urlset>
